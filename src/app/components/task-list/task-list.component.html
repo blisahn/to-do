@@ -1,0 +1,17 @@
+<br>
+<table class="table table-hover" >
+    <thead class="table-dark">
+        <tr>
+            <th>Description</th>
+            <th>Creation Time</th>
+            <th>Update Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let tempTask of tasks">
+            <td>{{tempTask.description}}</td>
+            <td>{{tempTask.creationTime}}</td>
+            <td>{{tempTask.lastUpdate}}</td>
+        </tr>
+    </tbody>
+</table>
