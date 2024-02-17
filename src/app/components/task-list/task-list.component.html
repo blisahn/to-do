@@ -11,7 +11,6 @@
     <br>
 
     <ng-template #content let-modal>
-
         <div class="modal-header">
             <h4 class="modal-title" id="modal-basic-title">Task Detail</h4>
             <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
@@ -23,8 +22,8 @@
                 <div class="input-group">
                     <input id="description" class="form-control" name="taskData" placeholder="Run 5 km ..."
                         [(ngModel)]="this.tempTaskDescription" />
-                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="submitTask()"
-                        type="button">Save</button>
+                    <button class="btn btn-outline-secondary bi bi-floppy" (click)="submitTask()"
+                        type="button"></button>
                 </div>
             </div>
         </div>
@@ -36,23 +35,52 @@
     <table class="table table-hover">
         <thead class="table-dark">
             <tr>
-                <td></td>
+                <th>Action</th>
                 <th>Description</th>
                 <th>Creation Time</th>
                 <th>Update Time</th>
+                <th>Status</th>
+                <th></th>
             </tr>
         </thead>
 
         <tbody>
-            <tr *ngFor="let tempTask of tasks">
+            <tr *ngFor="let tempTask of tasks" class="{{tempTask.isDone ? 'table-success':''}} lint-through;">
                 <td>
-                    <div>
-                        <input type="checkbox">
+                    <ng-template #content let-modal>
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modal-basic-title">Task Detail</h4>
+                            <button type="button" class="btn-close" aria-label="Close"
+                                (click)="modal.dismiss('Cross click')"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="description">Description</label>
+                                <div class="input-group">
+                                    <input id="description" class="form-control" name="taskData"
+                                        placeholder="Run 5 km ..." [(ngModel)]="this.tempTaskDescription">
+                                    <button class="btn btn-outline-secondary bi bi-pencil-square" (click)="update(tempTask)"
+                                        type="button"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <div *ngIf="!tempTask.isDone">
+                        <button (click)="open(content)" (click)="tempTaskDescription= tempTask.description"
+                            class="btn btn-info"><i class="fa fa-solid fa-pen"></i></button>
                     </div>
                 </td>
                 <td>{{tempTask.description}}</td>
                 <td>{{tempTask.creationTime}}</td>
                 <td>{{tempTask.lastUpdate}}</td>
+                <td>{{ tempTask.isDone ? 'Done!':'Pending...'}}</td>
+                <td>
+                    <button (click)="changeStatus(tempTask)" class="btn btn-success"><i
+                            class=" fa fa-solid fa-check"></i></button>
+                    &nbsp;
+                    <button class="btn btn-danger" (click)="deleteTask(tempTask.id)"><i
+                            class="fa fa-solid fa-trash"></i></button>
+                </td>
             </tr>
         </tbody>
     </table>

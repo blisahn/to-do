@@ -7,7 +7,7 @@ import { Task } from '../common/task';
   providedIn: 'root'
 })
 export class TaskService {
-
+  
   private baseUrl = 'http://localhost:8080/api/tasks';
   private listByCreationDate = '/search/findByCreationDate?creationDate=';
 
@@ -30,6 +30,15 @@ export class TaskService {
   placeTask(task : Task):Observable<any> {
     return this.httpClient.post<Task>(this.baseUrl,task);
   }
+
+  updateTask(task: Task):Observable<any> {
+    return this.httpClient.put<Task>(`${this.baseUrl}/${task.id}`,task);
+  }
+
+  deleteTask(taskId: number): Observable<any> {
+      return this.httpClient.delete<Task>(`${this.baseUrl}/${taskId}`)
+  }
+
 }
 
 interface GetResponseTasks {

@@ -1,10 +1,6 @@
-p.ex1 {
-    padding-top: 10%;
-  }
-
-    input{
-    padding: 5px;
-    font-size: 15px;
-    }
 
     @import "~bootstrap-icons/font/bootstrap-icons.css";
+
+    .todo.done .content {
+      text-decoration: line-through;
+    }

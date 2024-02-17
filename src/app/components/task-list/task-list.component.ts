@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TaskService } from 'src/app/service/task.service';
 import { Task } from 'src/app/common/task';
-import { formatDate } from '@angular/common';
+import { NgIfContext, formatDate } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -88,6 +88,7 @@ export class TaskListComponent implements OnInit {
   }
 
   getDismissReason(reason: any): string {
+    this.tempTaskDescription = "";
     switch (reason) {
       case ModalDismissReasons.ESC:
         this.listTasks();
@@ -101,27 +102,75 @@ export class TaskListComponent implements OnInit {
     }
   }
 
+  update(task: Task) {
+    task.description = this.tempTaskDescription;
+    console.log(`${this.tempTaskDescription} eklendi`);
+    console.log(task.description);
+    console.log(`update() basıldı`);
+
+    this.taskService.updateTask(task).subscribe({
+      next: response => {
+        alert(`Your task has been updated`);
+      },
+      error: response => {
+        alert(`There was an error`);
+      }
+    });
+
+  }
+
 
   submitTask() {
     let tempTask: Task = {
       id: 0,
       description: "Default Description",
-      creationTime:undefined ,
-      lastUpdate: undefined
+      creationTime: undefined,
+      lastUpdate: undefined,
+      isDone: false,
     };
     tempTask.description = this.tempTaskDescription;
     console.log(tempTask.description);
 
     this.taskService.placeTask(tempTask).subscribe({
-      next: response =>{
+      next: response => {
         alert(`Your Task has been saved`);
       },
       error: err => {
         alert(`There was an error`)
       }
     });
-      
-    console.log("Done!!");
-  
+
   }
+
+
+
+  changeStatus(tempTask: Task) {
+    let taskStatus = tempTask.isDone;
+    console.log(taskStatus);
+    tempTask.isDone = !taskStatus;
+    console.log(tempTask.isDone);
+
+    this.taskService.updateTask(tempTask).subscribe({
+      next: response => {
+
+      },
+      error: err => {
+        alert(`Something went wrong while updating the task`);
+      }
+    }
+    );
+  }
+
+  deleteTask(taskId: number) {
+    this.taskService.deleteTask(taskId).subscribe({
+      next: response => {
+        alert(`Task has been deleted`)
+      },
+      error: err => {
+        alert(`Something went wrong while deleting the task`);
+      }
+    });
+
+  }
+
 }
