@@ -32,8 +32,15 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     this.listTasks();
-    console.log('sa');
+  }
 
+  private handleResponse() {
+    this.ngOnInit();
+  }
+
+  private handleError() {
+    alert(`Something went wrong`);
+    this.ngOnInit();
   }
 
 
@@ -44,7 +51,6 @@ export class TaskListComponent implements OnInit {
       this.handleFindByDate();
     } else {
       console.log("tarih yok");
-
       this.handleListTasks();
     }
   }
@@ -60,7 +66,6 @@ export class TaskListComponent implements OnInit {
   }
 
   handleFindByDate() {
-    console.log("selam");
     if (this.selectedDate === "") {
       this.selectedDate = formatDate(Date.now(), 'yyyy-MM-dd', 'en-US');
     }
@@ -104,17 +109,9 @@ export class TaskListComponent implements OnInit {
 
   update(task: Task) {
     task.description = this.tempTaskDescription;
-    console.log(`${this.tempTaskDescription} eklendi`);
-    console.log(task.description);
-    console.log(`update() basıldı`);
-
     this.taskService.updateTask(task).subscribe({
-      next: response => {
-        alert(`Your task has been updated`);
-      },
-      error: response => {
-        alert(`There was an error`);
-      }
+      next: () => this.handleResponse(),
+      error: () => this.handleError()
     });
 
   }
@@ -124,20 +121,14 @@ export class TaskListComponent implements OnInit {
     let tempTask: Task = {
       id: 0,
       description: "Default Description",
-      creationTime: undefined,
-      lastUpdate: undefined,
-      isDone: false,
     };
+
     tempTask.description = this.tempTaskDescription;
-    console.log(tempTask.description);
+
 
     this.taskService.placeTask(tempTask).subscribe({
-      next: response => {
-        alert(`Your Task has been saved`);
-      },
-      error: err => {
-        alert(`There was an error`)
-      }
+      next: () => this.handleResponse(),
+      error: () => this.handleError()
     });
 
   }
@@ -151,24 +142,16 @@ export class TaskListComponent implements OnInit {
     console.log(tempTask.isDone);
 
     this.taskService.updateTask(tempTask).subscribe({
-      next: response => {
-
-      },
-      error: err => {
-        alert(`Something went wrong while updating the task`);
-      }
+      next: () => this.handleResponse(),
+      error: () => this.handleError()
     }
     );
   }
 
   deleteTask(taskId: number) {
     this.taskService.deleteTask(taskId).subscribe({
-      next: response => {
-        alert(`Task has been deleted`)
-      },
-      error: err => {
-        alert(`Something went wrong while deleting the task`);
-      }
+      next: () => this.handleResponse(),
+      error: () => this.handleError()
     });
 
   }

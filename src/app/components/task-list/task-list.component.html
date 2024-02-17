@@ -23,7 +23,7 @@
                     <input id="description" class="form-control" name="taskData" placeholder="Run 5 km ..."
                         [(ngModel)]="this.tempTaskDescription" />
                     <button class="btn btn-outline-secondary bi bi-floppy" (click)="submitTask()"
-                        type="button"></button>
+                        (click)="modal.dismiss('Cross Click')" type="button"></button>
                 </div>
             </div>
         </div>
@@ -59,7 +59,8 @@
                                 <div class="input-group">
                                     <input id="description" class="form-control" name="taskData"
                                         placeholder="Run 5 km ..." [(ngModel)]="this.tempTaskDescription">
-                                    <button class="btn btn-outline-secondary bi bi-pencil-square" (click)="update(tempTask)"
+                                    <button class="btn btn-outline-secondary bi bi-pencil-square"
+                                        (click)="update(tempTask)" (click)="modal.dismiss('Cross Click')"
                                         type="button"></button>
                                 </div>
                             </div>
@@ -78,9 +79,39 @@
                     <button (click)="changeStatus(tempTask)" class="btn btn-success"><i
                             class=" fa fa-solid fa-check"></i></button>
                     &nbsp;
-                    <button class="btn btn-danger" (click)="deleteTask(tempTask.id)"><i
+
+
+                    <ng-template #deleteContent let-modal>
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modal-basic-title">Confirmation</h4>
+                            <button type="button" class="btn-close" aria-label="Close"
+                                (click)="modal.dismiss('Cross click')"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <div *ngIf="!tempTask.isDone">
+                                    <label>This task hasn't finished yet.</label>
+                                    <br>
+                                </div>
+                                <label for="description">Are you sure want to delete ?</label>
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                <button class="btn btn-danger bi bi-trash-fill" (click)="deleteTask(tempTask.id)"
+                                    (click)="modal.dismiss()" type="button"></button>
+                                &nbsp;
+                                &nbsp;
+                                &nbsp;
+                                <button class="align-center btn btn-secondary" (click)="modal.dismiss('Cross Click')"
+                                    type="button"> Cancel </button>
+
+                            </div>
+                        </div>
+                    </ng-template>
+                    <button class="btn btn-danger" (click)="open(deleteContent)"><i
                             class="fa fa-solid fa-trash"></i></button>
                 </td>
+
             </tr>
         </tbody>
     </table>
