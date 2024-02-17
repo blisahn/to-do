@@ -1,5 +1,38 @@
 <div class="container-fluid">
-    <input type="date" [(ngModel)]="selectedDate"  (change)="handleFindByDate()">
+
+    <form class="row row-cols-sm-auto">
+        <div class="col-12">
+            <div class="input-group">
+                <input type="date" class="form-control" placeholder="{{this.selectedDate}}" name="dp"
+                    [(ngModel)]="this.selectedDate" (change)="handleFindByDate()" />
+            </div>
+        </div>
+    </form>
+    <br>
+
+    <ng-template #content let-modal>
+
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Task Detail</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+
+        <div class="modal-body">
+            <div class="mb-3">
+                <label for="description">Description</label>
+                <div class="input-group">
+                    <input id="description" class="form-control" name="taskData" placeholder="Run 5 km ..."
+                        [(ngModel)]="this.tempTaskDescription" />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="submitTask()"
+                        type="button">Save</button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Save Task</button>
+
+
+    <hr />
     <table class="table table-hover">
         <thead class="table-dark">
             <tr>

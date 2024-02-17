@@ -26,6 +26,10 @@ export class TaskService {
       .get<GetResponseTasks>(this.baseUrl + this.listByCreationDate + `${date}`)
       .pipe(map((response) => response._embedded.tasks));
   }
+
+  placeTask(task : Task):Observable<any> {
+    return this.httpClient.post<Task>(this.baseUrl,task);
+  }
 }
 
 interface GetResponseTasks {
