@@ -1,17 +1,30 @@
-<br>
-<table class="table table-hover" >
-    <thead class="table-dark">
-        <tr>
-            <th>Description</th>
-            <th>Creation Time</th>
-            <th>Update Time</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let tempTask of tasks">
-            <td>{{tempTask.description}}</td>
-            <td>{{tempTask.creationTime}}</td>
-            <td>{{tempTask.lastUpdate}}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="container-fluid">
+    <input type="date" [(ngModel)]="selectedDate"  (change)="handleFindByDate()">
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <td></td>
+                <th>Description</th>
+                <th>Creation Time</th>
+                <th>Update Time</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let tempTask of tasks">
+                <td>
+                    <div>
+                        <input type="checkbox">
+                    </div>
+                </td>
+                <td>{{tempTask.description}}</td>
+                <td>{{tempTask.creationTime}}</td>
+                <td>{{tempTask.lastUpdate}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="tasks?.length===0" class="alert alert-danger col-md-12" role="alert">
+        No tasks has been found
+    </div>
+</div>

@@ -9,20 +9,27 @@ import { Task } from '../common/task';
 export class TaskService {
 
   private baseUrl = 'http://localhost:8080/api/tasks';
+  private listByCreationDate = '/search/findByCreationDate?creationDate=';
 
   constructor(private httpClient: HttpClient) { }
 
 
 
-  getTaskList(): Observable<Task[]>{
+  getTaskList(): Observable<Task[]> {
     return this.httpClient
-        .get<GetResponseTasks>(this.baseUrl)
-        .pipe(map((response) => response._embedded.tasks));
+      .get<GetResponseTasks>(this.baseUrl)
+      .pipe(map((response) => response._embedded.tasks));
+  }
+
+  getTasksByCreationTime(date: string): Observable<Task[]> {
+    return this.httpClient
+      .get<GetResponseTasks>(this.baseUrl + this.listByCreationDate + `${date}`)
+      .pipe(map((response) => response._embedded.tasks));
   }
 }
 
-interface GetResponseTasks{
-  _embedded:{
+interface GetResponseTasks {
+  _embedded: {
     tasks: Task[];
   };
 }
